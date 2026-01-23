@@ -4,3 +4,6 @@ token.json
 
 # Entorno virtual
 env/
+
+#pycache
+__pycache__/
