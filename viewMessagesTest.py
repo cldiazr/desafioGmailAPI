@@ -9,6 +9,7 @@ from email import policy
 from email.parser import BytesParser
 import re
 
+DOMINIOS_SEGUROS = ["google.com", "cashea.app", "spicosmos.com", "empresa.com"]
 
 def main():
     listAlert = set()
@@ -30,13 +31,14 @@ def main():
             )
             msg_bytes = base64.urlsafe_b64decode(msg['raw'].encode('ASCII'))
             mime_msg = BytesParser(policy=policy.default).parsebytes(msg_bytes)
-            if not((re.search(r'\bgoogle.com\b', mime_msg['from'])) or (re.search(r'\bcashea.app\b', mime_msg['from'])) or (re.search(r'\bspicosmos.com\b', mime_msg['from']))):
+            remitente = mime_msg['from'].lower()
+            if not(any(dominio in remitente for dominio in DOMINIOS_SEGUROS)):
                 if mime_msg.is_multipart():
                     for part in mime_msg.walk():
                         content_type = part.get_content_type()
                         content_disposition = str(part.get("Content-Disposition"))
                         if content_type == "text/plain" and "attachment" not in content_disposition:
-                            body = part.get_payload(decode=True).decode()
+                            body = part.get_payload(decode=True).decode('utf-8', errors='replace')
                             revision_correo(body.lower(),mime_msg['subject'],mime_msg['from'],listAlert)
                         elif "attachment" in content_disposition:
                                 filename = part.get_filename()
@@ -45,7 +47,7 @@ def main():
                                         print(f"Asunto: {mime_msg['subject']}" +" | "+ f"De: {mime_msg['from']}" +" | "+ f"Archivo adjunto encontrado: {filename}")
                                         listAlert.add(f"Asunto: {mime_msg['subject']}" +" | "+ f"De: {mime_msg['from']}" +" | "+ f"Archivo adjunto encontrado: {filename}")
                 else:
-                    body = mime_msg.get_payload(decode=True).decode()
+                    body = mime_msg.get_payload(decode=True).decode('utf-8', errors='replace')
                     revision_correo(body.lower(),mime_msg['subject'],mime_msg['from'],listAlert)
         save_archivo(listAlert)
     except HttpError as error:
