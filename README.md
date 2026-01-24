@@ -6,78 +6,80 @@ Este proyecto fue desarrollado como parte de un reto técnico, implementando aut
 
 ## Características
 
-    * Autenticación Segura: Conexión vía OAuth 2.0 con Google (scope `readonly`).
-    * Análisis de Contenido: Escaneo automático de palabras clave sensibles (`confidencial`, `contraseña`) en el asunto y cuerpo del correo.
-    * Detección de adjuntos: Identificación de adjuntos con extensiones prohibidas (`.exe`, `.bat`, `.js`, `.zip`), incluyendo detección de doble extensión.
-    * Lista Blanca (Whitelist): Filtrado de correos provenientes de dominios confiables (ej. `@google.com`).
-    * Sistema de Alertas:
-        * Registro local en archivo `alertas.txt` (evitando duplicados).
-        * Notificación en tiempo real vía Webhook.
+* Autenticación Segura: Conexión vía OAuth 2.0 con Google (scope `readonly`).
+* Análisis de Contenido: Escaneo automático de palabras clave sensibles (`confidencial`, `contraseña`) en el asunto y cuerpo del correo.
+* Detección de adjuntos: Identificación de adjuntos con extensiones prohibidas (`.exe`, `.bat`, `.js`, `.zip`), incluyendo detección de doble extensión.
+* Lista Blanca (Whitelist): Filtrado de correos provenientes de dominios confiables (ej. `@google.com`).
+* Sistema de Alertas:
+    * Registro local en archivo `alertas.txt` (evitando duplicados).
+    * Notificación en tiempo real vía Webhook.
 
 ## Requisitos Previos
 
-    * Python 3.10 o superior.
-    * Una cuenta de Google Cloud Platform con la "Gmail API" habilitada.
-    * Archivo `credentials.json` descargado de GCP (OAuth 2.0 Client ID).
+* Python 3.10 o superior.
+* Una cuenta de Google Cloud Platform con la "Gmail API" habilitada.
+* Archivo `credentials.json` descargado de GCP (OAuth 2.0 Client ID).
 
 ## Instalación
 
-    1.  Clonar el repositorio:
+1.  Clonar el repositorio:
 
-        git clone https://github.com/cldiazr/desafioGmailAPI.git
-        cd desafioGmailAPI
+    git clone https://github.com/cldiazr/desafioGmailAPI.git
+    cd desafioGmailAPI
 
-    2.  Crear y activar entorno virtual (recomendado para evitar conflictos con librerias instaladas de forma global):
+2.  Crear y activar entorno virtual (recomendado para evitar conflictos con librerias instaladas de forma global):
 
-        python -m venv venv
-        # En Windows:
-        .\venv\Scripts\activate
-        # En Mac/Linux:
-        source venv/bin/activate
+    python -m venv venv
+    # En Windows:
+    .\venv\Scripts\activate
+    # En Mac/Linux:
+    source venv/bin/activate
 
-    3.  Instalar dependencias:
+3.  Instalar dependencias:
 
-        pip install -r requirements.txt
+    pip install -r requirements.txt
 
-    4.  Configuración de Credenciales:
-        * Coloca tu archivo `credentials.json` en la raíz del proyecto.
+4.  Configuración de Credenciales:
+    * Coloca tu archivo `credentials.json` en la raíz del proyecto.
 
 ## Configuración
 
-    * Webhook
-        El sistema está configurado para enviar alertas a un endpoint externo.
-        * El archivo `webhookAlert.py` contiene la variable `WEBHOOK_URL`.
-        * Para pruebas, se utilizó "Webhook.site".
-        Nota: Puedes cambiar esta URL por tu propio endpoint para ver las notificaciones en tu entorno.
+* Webhook
+    El sistema está configurado para enviar alertas a un endpoint externo.
+    * El archivo `webhookAlert.py` contiene la variable `WEBHOOK_URL`.
+    * Para pruebas, se utilizó "Webhook.site".
+    Nota: Puedes cambiar esta URL por tu propio endpoint para ver las notificaciones en tu entorno.
 
-    * Whitelist
-    Los dominios seguros se configuran en la lista `DOMINIOS_SEGUROS` dentro del archivo `viewMessagesTest.py`.
+* Whitelist
+Los dominios seguros se configuran en la lista `DOMINIOS_SEGUROS` dentro del archivo `viewMessagesTest.py`.
 
 ## Ejecución
 
 Para iniciar el análisis del buzón:
 
-    python viewMessagesTest.py
-        # Al ejecutarse por primera vez, se abrirá el navegador para solicitar permisos de lectura de Gmail.
-        Una vez autorizado, el script:
+python viewMessagesTest.py
 
-            Creará el token de sesión (token.json).
-            Leerá los últimos mensajes del Inbox y SPAM.
-            Imprimirá en consola las alertas detectadas.
-            Generará/Actualizará el archivo alertas.txt.
-            Enviará la notificación al Webhook configurado.
+# Al ejecutarse por primera vez, se abrirá el navegador para solicitar permisos de lectura de Gmail.
+
+Una vez autorizado, el script:
+
+Creará el token de sesión (token.json).
+Leerá los últimos mensajes del Inbox y SPAM.
+Imprimirá en consola las alertas detectadas.
+Generará/Actualizará el archivo alertas.txt.
+Enviará la notificación al Webhook configurado.
 
 ## Estructura del Proyecto
 
-    viewMessagesTest.py: Entry point. Realiza la lectura de mensajes y el flujo principal.
+viewMessagesTest.py: Entry point. Realiza la lectura de mensajes y el flujo principal.
 
-    connectApiGmail.py: Maneja la autenticación OAuth y renovación de tokens.
+connectApiGmail.py: Maneja la autenticación OAuth y renovación de tokens.
 
-    condicionalesAlerts.py: Lógica del proyecto (búsqueda de palabas claves y validación de adjuntos).
+condicionalesAlerts.py: Lógica del proyecto (búsqueda de palabas claves y validación de adjuntos).
 
-    webhookAlert.py: Módulo para el envío de peticiones HTTP (alertas externas).
+webhookAlert.py: Módulo para el envío de peticiones HTTP (alertas externas).
 
-    archivoAlert.py: Manejo de persistencia en archivo de texto.
+archivoAlert.py: Manejo de persistencia en archivo de texto.
 
 
 ## Webhook
@@ -88,6 +90,6 @@ link : https://webhook.site/#!/view/c5109a32-c479-409d-a480-e96d9cb49fd3/5fb1e06
     
 ## Whitelist
     
-    Los correos provenientes de dominios como google.com o empresa.com son ignorados automáticamente por el analizador.
+Los correos provenientes de dominios como google.com o empresa.com son ignorados automáticamente por el analizador.
 
 Hecho por Christian Diaz
