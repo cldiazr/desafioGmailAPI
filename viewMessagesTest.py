@@ -7,20 +7,39 @@ import httplib2
 import base64
 from email import policy
 from email.parser import BytesParser
-import re
 
-DOMINIOS_SEGUROS = ["google.com", "cashea.app", "spicosmos.com", "empresa.com"]
+"""
+    * Funcion principal del proyecto.
+    * Se establece una constante donde se encuentran los Dominios Seguros o Whitelist
+    * Se realiza la solicitud para conectar a la Api de Gmail en otra funcion
+        para luego solicitar todos los ID de los correos recibidos en la bandeja de entrada y SPAM
+    * Estos ID se guardan en una lista,
+    * Luego se itera la lista para obtener la estructura completa del correo
+        usando el usuario autenticado para obtener esta estructura "userId"
+        se usa el ID para obtener esta estructura
+        se usa la etiqueta raw para obtener la estructura completa
+    * Luego se usa la libreria email de Python para tener un mejor manejo de los correos.
+    * Para realizar cualquier comparacion se convierten las cadenas de texto en minuscula
+        para no tener errores en las validaciones.
+    * Se realiza una comparacion en la estructura del correo
+        multipart: La estructura tiene varias partes donde se almacenan datos distintos,
+            ejemplo los archivos adjuntos y el body
+        single-part : para las estructuras que solo contiene el body
+    * Se itera cada parte del correo para realizar las validaciones requeridas para
+        guardar y mostrar las alertas.
+    * Se utiliza decode('utf-8') para obtener las cadenas de texto con caracteres especiales.
+"""
+
+DOMINIOS_SEGUROS = ["google.com", "cashea.app", "spicosmos.com", "empresa.com"] # WhiteList
 
 def main():
     listAlert = set()
     try:
-        # Call the Gmail API
         service = build("gmail", "v1", credentials= connectApi())
         results = (
             service.users().messages().list(userId="me", includeSpamTrash=True).execute()
         )
         messages = results.get("messages", [])
-
         if not messages:
             print("Sin mensajes")
             return
