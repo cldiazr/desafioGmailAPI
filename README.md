@@ -25,6 +25,7 @@ Este proyecto fue desarrollado como parte de un reto técnico, implementando aut
 1.  Clonar el repositorio:
 
     git clone https://github.com/cldiazr/desafioGmailAPI.git
+    
     cd desafioGmailAPI
 
 2.  Crear y activar entorno virtual (recomendado para evitar conflictos con librerias instaladas de forma global):
@@ -32,9 +33,9 @@ Este proyecto fue desarrollado como parte de un reto técnico, implementando aut
     python -m venv venv
 
     * En Windows:
-    .\venv\Scripts\activate
+        .\venv\Scripts\activate
     * En Mac/Linux:
-    source venv/bin/activate
+        source venv/bin/activate
 
 3.  Instalar dependencias:
 
