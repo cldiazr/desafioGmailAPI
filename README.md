@@ -30,9 +30,10 @@ Este proyecto fue desarrollado como parte de un reto técnico, implementando aut
 2.  Crear y activar entorno virtual (recomendado para evitar conflictos con librerias instaladas de forma global):
 
     python -m venv venv
-    # En Windows:
+
+    * En Windows:
     .\venv\Scripts\activate
-    # En Mac/Linux:
+    * En Mac/Linux:
     source venv/bin/activate
 
 3.  Instalar dependencias:
@@ -59,15 +60,15 @@ Para iniciar el análisis del buzón:
 
 python viewMessagesTest.py
 
-# Al ejecutarse por primera vez, se abrirá el navegador para solicitar permisos de lectura de Gmail.
+* Al ejecutarse por primera vez, se abrirá el navegador para solicitar permisos de lectura de Gmail.
 
-Una vez autorizado, el script:
+    Una vez autorizado, el script:
 
-Creará el token de sesión (token.json).
-Leerá los últimos mensajes del Inbox y SPAM.
-Imprimirá en consola las alertas detectadas.
-Generará/Actualizará el archivo alertas.txt.
-Enviará la notificación al Webhook configurado.
+    Creará el token de sesión (token.json).
+    Leerá los últimos mensajes del Inbox y SPAM.
+    Imprimirá en consola las alertas detectadas.
+    Generará/Actualizará el archivo alertas.txt.
+    Enviará la notificación al Webhook configurado.
 
 ## Estructura del Proyecto
 
