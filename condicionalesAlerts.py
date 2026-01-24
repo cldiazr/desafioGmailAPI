@@ -16,12 +16,13 @@ from webhookAlert import alert_webhook
 
 def revision_correo(bodyCorreo,asuntoCorreo,fromCorreo,listAlerts):
     partMensaje = (f"Asunto: {asuntoCorreo}" +" | "+ f"De: {fromCorreo}" +" | ")
-    if re.search(r'\bcontraseña\b', bodyCorreo):
+    correo = bodyCorreo.strip() +" "+ asuntoCorreo.strip()
+    if re.search(r'\bcontraseña\b', correo.lower()):
         mensaje = partMensaje + "Palabra: Contraseña"
         print(mensaje)
         listAlerts.add(mensaje)
         alert_webhook(mensaje)
-    if re.search(r'\bconfidencial\b', bodyCorreo):
+    if re.search(r'\bconfidencial\b', correo.lower()):
         mensaje = partMensaje + "Palabra: Confidencial"
         print(mensaje)
         listAlerts.add(mensaje)

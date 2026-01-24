@@ -15,7 +15,7 @@ import json
         * El mensaje que se envia es la alerta detectada en el analisis de cada correo.
 '''
 
-WEBHOOK_URL = "https://webhook.site/a68dc9de-1c92-4304-834e-86ac27d80368"
+WEBHOOK_URL = "https://webhook.site/c5109a32-c479-409d-a480-e96d9cb49fd3"
 
 def alert_webhook(mensaje):
     payload = {"text" : mensaje}

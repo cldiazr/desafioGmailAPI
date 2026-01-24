@@ -67,6 +67,7 @@ def main():
                     body = mime_msg.get_payload(decode=True).decode('utf-8', errors='replace')
                     revision_correo(body.lower(),mime_msg['subject'],mime_msg['from'],listAlert)
         save_archivo(listAlert)
+        print(f"{len(listAlert)} Alertas Detectadas")
     except HttpError as error:
         if error: 
             print("Ocurrio un error al conectarse a la API de Gmail")
