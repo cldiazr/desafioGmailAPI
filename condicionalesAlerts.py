@@ -1,30 +1,36 @@
 import re
+from webhookAlert import alert_webhook
 
 def revision_correo(bodyCorreo,asuntoCorreo,fromCorreo,listAlerts):
+    partMensaje = (f"Asunto: {asuntoCorreo}" +" | "+ f"De: {fromCorreo}" +" | ")
     if re.search(r'\bcontraseña\b', bodyCorreo):
-        print(f"Asunto: {asuntoCorreo}" +" | "+ f"De: {fromCorreo}" +" | "+ "Palabra: Contraseña")
-        listAlerts.add(f"Asunto: {asuntoCorreo}" +" | "+ f"De: {fromCorreo}" +" | "+ "Palabra: Contraseña")
+        mensaje = partMensaje + "Palabra: Contraseña"
+        print(mensaje)
+        listAlerts.add(mensaje)
+        alert_webhook(mensaje)
     if re.search(r'\bconfidencial\b', bodyCorreo):
-        print(f"Asunto: {asuntoCorreo}" +" | "+f"De: {fromCorreo}" +" | "+ "Palabra: Confidencial")
-        listAlerts.add(f"Asunto: {asuntoCorreo}" +" | "+ f"De: {fromCorreo}" +" | "+ "Palabra: Confidencial")
+        mensaje = partMensaje + "Palabra: Confidencial"
+        print(mensaje)
+        listAlerts.add(mensaje)
+        alert_webhook(mensaje)
 
-def es_archivo_peligroso(filename):
-    # 1. Normalización básica
+def es_archivo_peligroso(filename,asuntoCorreo,fromCorreo,listAlerts):
+    partMensaje = (f"Asunto: {asuntoCorreo}" +" | "+ f"De: {fromCorreo}" +" | Archivo adjunto encontrado: ")
     nombre_limpio = filename.lower().strip()
     
     extensiones_prohibidas = (".zip", ".exe", ".js", ".bat")
-    # 3. Verificación de extensión final
     if nombre_limpio.endswith(extensiones_prohibidas):
-        return True
-
-    # 4. Verificación de doble extensión
-    # Dividimos el nombre por los puntos
+        mensaje = partMensaje + filename
+        print(mensaje)
+        listAlerts.add(mensaje)
+        alert_webhook(mensaje)
     partes = nombre_limpio.split('.')
     
     if len(partes) > 2:
-        # Revisamos si alguna de las extensiones intermedias es peligrosa
-        for parte in partes[1:-1]: # Saltamos el nombre y la extensión final
+        for parte in partes[1:-1]:
             if f".{parte}" in extensiones_prohibidas:
-                return True
-
+                mensaje = partMensaje + filename
+                print(mensaje)
+                listAlerts.add(mensaje)
+                alert_webhook(mensaje)
     return False

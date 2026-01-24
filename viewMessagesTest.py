@@ -43,9 +43,7 @@ def main():
                         elif "attachment" in content_disposition:
                                 filename = part.get_filename()
                                 if filename:
-                                    if es_archivo_peligroso(filename):      
-                                        print(f"Asunto: {mime_msg['subject']}" +" | "+ f"De: {mime_msg['from']}" +" | "+ f"Archivo adjunto encontrado: {filename}")
-                                        listAlert.add(f"Asunto: {mime_msg['subject']}" +" | "+ f"De: {mime_msg['from']}" +" | "+ f"Archivo adjunto encontrado: {filename}")
+                                    es_archivo_peligroso(filename,mime_msg['subject'],mime_msg['from'],listAlert)
                 else:
                     body = mime_msg.get_payload(decode=True).decode('utf-8', errors='replace')
                     revision_correo(body.lower(),mime_msg['subject'],mime_msg['from'],listAlert)
